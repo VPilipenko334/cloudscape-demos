@@ -14,6 +14,7 @@ interface HourlyForecastContentProps {
   forecast: HourlyForecast | null;
   loading: boolean;
   error?: string;
+  temperatureUnit: 'C' | 'F';
 }
 
 function HourlyForecastHeader() {
@@ -24,7 +25,7 @@ function HourlyForecastHeader() {
   );
 }
 
-function HourlyForecastContent({ forecast, loading, error }: HourlyForecastContentProps) {
+function HourlyForecastContent({ forecast, loading, error, temperatureUnit }: HourlyForecastContentProps) {
   if (loading) {
     return (
       <Box textAlign="center" padding="l">
@@ -54,10 +55,14 @@ function HourlyForecastContent({ forecast, loading, error }: HourlyForecastConte
     );
   }
 
-  const temperatureData = forecast.time.map((time, index) => ({
-    x: new Date(time),
-    y: forecast.temperature[index],
-  }));
+  const temperatureData = forecast.time.map((time, index) => {
+    const temp = forecast.temperature[index];
+    const convertedTemp = temperatureUnit === 'F' ? Math.round((temp * 9) / 5 + 32) : temp;
+    return {
+      x: new Date(time),
+      y: convertedTemp,
+    };
+  });
 
   const precipitationData = forecast.time.map((time, index) => ({
     x: new Date(time),
@@ -68,7 +73,7 @@ function HourlyForecastContent({ forecast, loading, error }: HourlyForecastConte
     <LineChart
       series={[
         {
-          title: 'Temperature (°C)',
+          title: `Temperature (°${temperatureUnit})`,
           type: 'line',
           data: temperatureData,
           color: '#2563eb',
@@ -103,7 +108,7 @@ function HourlyForecastContent({ forecast, loading, error }: HourlyForecastConte
       ariaDescription="Line chart showing temperature and precipitation for the next 24 hours"
       detailPopoverSeriesContent={({ series, y }) => ({
         key: series.title,
-        value: series.title.includes('Temperature') ? formatTemperature(y) : `${y} mm`,
+        value: series.title.includes('Temperature') ? formatTemperature(y, temperatureUnit) : `${y} mm`,
       })}
     />
   );
@@ -113,6 +118,7 @@ export function createHourlyForecastWidget(
   forecast: HourlyForecast | null,
   loading: boolean,
   error?: string,
+  temperatureUnit: 'C' | 'F' = 'C',
 ): WidgetConfig {
   return {
     definition: { defaultRowSpan: 4, defaultColumnSpan: 2, minRowSpan: 3 },
@@ -121,7 +127,9 @@ export function createHourlyForecastWidget(
       title: 'Hourly Forecast',
       description: '24-hour temperature and precipitation forecast',
       header: HourlyForecastHeader,
-      content: () => <HourlyForecastContent forecast={forecast} loading={loading} error={error} />,
+      content: () => (
+        <HourlyForecastContent forecast={forecast} loading={loading} error={error} temperatureUnit={temperatureUnit} />
+      ),
       staticMinHeight: 360,
     },
   };

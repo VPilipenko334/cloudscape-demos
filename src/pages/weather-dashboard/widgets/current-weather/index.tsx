@@ -15,6 +15,7 @@ interface CurrentWeatherContentProps {
   weather: CurrentWeather | null;
   loading: boolean;
   error?: string;
+  temperatureUnit: 'C' | 'F';
 }
 
 function CurrentWeatherHeader() {
@@ -25,7 +26,7 @@ function CurrentWeatherHeader() {
   );
 }
 
-function CurrentWeatherContent({ weather, loading, error }: CurrentWeatherContentProps) {
+function CurrentWeatherContent({ weather, loading, error, temperatureUnit }: CurrentWeatherContentProps) {
   if (loading) {
     return (
       <Box textAlign="center" padding="l">
@@ -59,7 +60,7 @@ function CurrentWeatherContent({ weather, loading, error }: CurrentWeatherConten
     <SpaceBetween size="m">
       <div style={{ textAlign: 'center' }}>
         <Box fontSize="display-l" fontWeight="bold">
-          {getWeatherIcon(weather.weatherCode)} {formatTemperature(weather.temperature)}
+          {getWeatherIcon(weather.weatherCode)} {formatTemperature(weather.temperature, temperatureUnit)}
         </Box>
         <Box variant="h3" color="text-body-secondary">
           {getWeatherDescription(weather.weatherCode)}
@@ -92,6 +93,7 @@ export function createCurrentWeatherWidget(
   weather: CurrentWeather | null,
   loading: boolean,
   error?: string,
+  temperatureUnit: 'C' | 'F' = 'C',
 ): WidgetConfig {
   return {
     definition: { defaultRowSpan: 3, defaultColumnSpan: 1 },
@@ -100,7 +102,9 @@ export function createCurrentWeatherWidget(
       title: 'Current Weather',
       description: 'Current weather conditions',
       header: CurrentWeatherHeader,
-      content: () => <CurrentWeatherContent weather={weather} loading={loading} error={error} />,
+      content: () => (
+        <CurrentWeatherContent weather={weather} loading={loading} error={error} temperatureUnit={temperatureUnit} />
+      ),
     },
   };
 }

@@ -8,6 +8,7 @@ import ColumnLayout from '@cloudscape-design/components/column-layout';
 import Header from '@cloudscape-design/components/header';
 import SpaceBetween from '@cloudscape-design/components/space-between';
 import Spinner from '@cloudscape-design/components/spinner';
+import Toggle from '@cloudscape-design/components/toggle';
 
 import { WeatherData } from '../../services/weather-api';
 import { WidgetConfig } from '../interfaces';
@@ -18,6 +19,8 @@ interface WeatherLocationContentProps {
   error?: string;
   locationName: string;
   onRefreshLocation: () => void;
+  temperatureUnit: 'C' | 'F';
+  onTemperatureUnitChange: (unit: 'C' | 'F') => void;
 }
 
 function WeatherLocationHeader() {
@@ -34,6 +37,8 @@ function WeatherLocationContent({
   error,
   locationName,
   onRefreshLocation,
+  temperatureUnit,
+  onTemperatureUnitChange,
 }: WeatherLocationContentProps) {
   if (loading) {
     return (
@@ -93,6 +98,15 @@ function WeatherLocationContent({
           <Box variant="awsui-key-label">Last Updated</Box>
           <Box>{lastUpdated}</Box>
         </div>
+        <div>
+          <Box variant="awsui-key-label">Temperature Unit</Box>
+          <Toggle
+            onChange={({ detail }) => onTemperatureUnitChange(detail.checked ? 'F' : 'C')}
+            checked={temperatureUnit === 'F'}
+          >
+            {temperatureUnit === 'F' ? 'Fahrenheit' : 'Celsius'}
+          </Toggle>
+        </div>
       </ColumnLayout>
 
       <SpaceBetween direction="horizontal" size="xs">
@@ -110,6 +124,8 @@ export function createWeatherLocationWidget(
   error: string | undefined,
   locationName: string,
   onRefreshLocation: () => void,
+  temperatureUnit: 'C' | 'F' = 'C',
+  onTemperatureUnitChange: (unit: 'C' | 'F') => void = () => {},
 ): WidgetConfig {
   return {
     definition: { defaultRowSpan: 3, defaultColumnSpan: 1 },
@@ -125,6 +141,8 @@ export function createWeatherLocationWidget(
           error={error}
           locationName={locationName}
           onRefreshLocation={onRefreshLocation}
+          temperatureUnit={temperatureUnit}
+          onTemperatureUnitChange={onTemperatureUnitChange}
         />
       ),
     },

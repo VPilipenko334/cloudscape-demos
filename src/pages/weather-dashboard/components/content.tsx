@@ -18,6 +18,7 @@ export function Content() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
   const [locationName, setLocationName] = useState('Unknown Location');
+  const [temperatureUnit, setTemperatureUnit] = useState<'C' | 'F'>('C');
 
   const loadWeatherData = async () => {
     try {
@@ -42,10 +43,18 @@ export function Content() {
   }, []);
 
   const widgets = [
-    createCurrentWeatherWidget(weatherData?.current || null, loading, error),
-    createWeatherLocationWidget(weatherData, loading, error, locationName, loadWeatherData),
-    createHourlyForecastWidget(weatherData?.hourly || null, loading, error),
-    createDailyForecastWidget(weatherData?.daily || null, loading, error),
+    createCurrentWeatherWidget(weatherData?.current || null, loading, error, temperatureUnit),
+    createWeatherLocationWidget(
+      weatherData,
+      loading,
+      error,
+      locationName,
+      loadWeatherData,
+      temperatureUnit,
+      setTemperatureUnit,
+    ),
+    createHourlyForecastWidget(weatherData?.hourly || null, loading, error, temperatureUnit),
+    createDailyForecastWidget(weatherData?.daily || null, loading, error, temperatureUnit),
   ];
 
   return (

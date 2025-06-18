@@ -21,6 +21,7 @@ interface DailyForecastContentProps {
   forecast: DailyForecast | null;
   loading: boolean;
   error?: string;
+  temperatureUnit: 'C' | 'F';
 }
 
 function DailyForecastHeader() {
@@ -31,7 +32,7 @@ function DailyForecastHeader() {
   );
 }
 
-function DailyForecastContent({ forecast, loading, error }: DailyForecastContentProps) {
+function DailyForecastContent({ forecast, loading, error, temperatureUnit }: DailyForecastContentProps) {
   if (loading) {
     return (
       <Box textAlign="center" padding="l">
@@ -99,8 +100,8 @@ function DailyForecastContent({ forecast, loading, error }: DailyForecastContent
           header: 'Temperature',
           cell: item => (
             <SpaceBetween direction="horizontal" size="xs">
-              <Box fontWeight="bold">{formatTemperature(item.temperatureMax)}</Box>
-              <Box color="text-body-secondary">{formatTemperature(item.temperatureMin)}</Box>
+              <Box fontWeight="bold">{formatTemperature(item.temperatureMax, temperatureUnit)}</Box>
+              <Box color="text-body-secondary">{formatTemperature(item.temperatureMin, temperatureUnit)}</Box>
             </SpaceBetween>
           ),
         },
@@ -135,6 +136,7 @@ export function createDailyForecastWidget(
   forecast: DailyForecast | null,
   loading: boolean,
   error?: string,
+  temperatureUnit: 'C' | 'F' = 'C',
 ): WidgetConfig {
   return {
     definition: { defaultRowSpan: 4, defaultColumnSpan: 2 },
@@ -143,7 +145,9 @@ export function createDailyForecastWidget(
       title: 'Daily Forecast',
       description: '7-day weather forecast',
       header: DailyForecastHeader,
-      content: () => <DailyForecastContent forecast={forecast} loading={loading} error={error} />,
+      content: () => (
+        <DailyForecastContent forecast={forecast} loading={loading} error={error} temperatureUnit={temperatureUnit} />
+      ),
       staticMinHeight: 400,
     },
   };

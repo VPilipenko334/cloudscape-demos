@@ -165,8 +165,26 @@ export function getWeatherIcon(weatherCode: number): string {
   return WEATHER_CODES[weatherCode]?.icon || '❓';
 }
 
-export function formatTemperature(temp: number): string {
+export function formatTemperature(temp: number, unit: 'C' | 'F' = 'C'): string {
+  if (unit === 'F') {
+    const fahrenheit = Math.round((temp * 9) / 5 + 32);
+    return `${fahrenheit}°F`;
+  }
   return `${temp}°C`;
+}
+
+export function convertTemperature(temp: number, fromUnit: 'C' | 'F', toUnit: 'C' | 'F'): number {
+  if (fromUnit === toUnit) return temp;
+
+  if (fromUnit === 'C' && toUnit === 'F') {
+    return Math.round((temp * 9) / 5 + 32);
+  }
+
+  if (fromUnit === 'F' && toUnit === 'C') {
+    return Math.round(((temp - 32) * 5) / 9);
+  }
+
+  return temp;
 }
 
 export function formatTime(timeString: string): string {
