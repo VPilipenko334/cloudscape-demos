@@ -6,7 +6,6 @@ import Box from '@cloudscape-design/components/box';
 import Header from '@cloudscape-design/components/header';
 import SpaceBetween from '@cloudscape-design/components/space-between';
 import Spinner from '@cloudscape-design/components/spinner';
-import Table from '@cloudscape-design/components/table';
 
 import {
   DailyForecast,
@@ -74,61 +73,100 @@ function DailyForecastContent({ forecast, loading, error, temperatureUnit }: Dai
   }));
 
   return (
-    <Table
-      columnDefinitions={[
-        {
-          id: 'date',
-          header: 'Date',
-          cell: item => (
-            <SpaceBetween direction="horizontal" size="xs" alignItems="center">
-              <Box fontWeight={item.isToday ? 'bold' : 'normal'}>{item.isToday ? 'Today' : item.formattedDate}</Box>
+    <div
+      style={{
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        paddingBottom: '8px',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          gap: '16px',
+          minWidth: 'max-content',
+          paddingLeft: '4px',
+          paddingRight: '4px',
+        }}
+      >
+        {forecastItems.map((item, index) => (
+          <div
+            key={item.date}
+            style={{
+              backgroundColor: item.isToday ? '#f3f4f6' : '#ffffff',
+              border: item.isToday ? '2px solid #0066cc' : '1px solid #e5e7eb',
+              borderRadius: '12px',
+              padding: '16px',
+              minWidth: '140px',
+              textAlign: 'center',
+              boxShadow: item.isToday ? '0 4px 6px rgba(0, 102, 204, 0.1)' : '0 1px 3px rgba(0, 0, 0, 0.1)',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              cursor: 'default',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = item.isToday
+                ? '0 4px 6px rgba(0, 102, 204, 0.1)'
+                : '0 1px 3px rgba(0, 0, 0, 0.1)';
+            }}
+          >
+            <SpaceBetween size="xs">
+              {/* Date */}
+              <Box
+                variant="strong"
+                fontSize={item.isToday ? 'body-m' : 'body-s'}
+                color={item.isToday ? 'text-status-info' : 'text-body-default'}
+              >
+                {item.isToday ? 'Today' : item.formattedDate}
+              </Box>
+
+              {/* Weather Icon */}
+              <div style={{ fontSize: '3em', margin: '8px 0' }}>{getWeatherIcon(item.weatherCode)}</div>
+
+              {/* Weather Description */}
+              <Box
+                variant="small"
+                color="text-body-secondary"
+                style={{
+                  fontSize: '11px',
+                  lineHeight: '1.2',
+                  minHeight: '24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {getWeatherDescription(item.weatherCode)}
+              </Box>
+
+              {/* Temperature */}
+              <SpaceBetween direction="horizontal" size="xs" alignItems="center">
+                <Box fontWeight="bold" fontSize="body-m">
+                  {formatTemperature(item.temperatureMax, temperatureUnit)}
+                </Box>
+                <Box color="text-body-secondary" fontSize="body-s">
+                  {formatTemperature(item.temperatureMin, temperatureUnit)}
+                </Box>
+              </SpaceBetween>
+
+              {/* Additional Info */}
+              <SpaceBetween size="xxs">
+                <Box fontSize="body-s" color="text-body-secondary">
+                  💧 {item.precipitation.toFixed(1)}mm
+                </Box>
+                <Box fontSize="body-s" color="text-body-secondary">
+                  💨 {item.windSpeed}km/h
+                </Box>
+              </SpaceBetween>
             </SpaceBetween>
-          ),
-        },
-        {
-          id: 'weather',
-          header: 'Weather',
-          cell: item => (
-            <SpaceBetween direction="horizontal" size="xs" alignItems="center">
-              <span style={{ fontSize: '1.2em' }}>{getWeatherIcon(item.weatherCode)}</span>
-              <Box>{getWeatherDescription(item.weatherCode)}</Box>
-            </SpaceBetween>
-          ),
-        },
-        {
-          id: 'temperature',
-          header: 'Temperature',
-          cell: item => (
-            <SpaceBetween direction="horizontal" size="xs">
-              <Box fontWeight="bold">{formatTemperature(item.temperatureMax, temperatureUnit)}</Box>
-              <Box color="text-body-secondary">{formatTemperature(item.temperatureMin, temperatureUnit)}</Box>
-            </SpaceBetween>
-          ),
-        },
-        {
-          id: 'precipitation',
-          header: 'Precipitation',
-          cell: item => `${item.precipitation.toFixed(1)} mm`,
-        },
-        {
-          id: 'wind',
-          header: 'Wind',
-          cell: item => `${item.windSpeed} km/h`,
-        },
-      ]}
-      items={forecastItems}
-      variant="embedded"
-      stickyHeader={false}
-      stripedRows={false}
-      trackBy="date"
-      empty={
-        <Box textAlign="center" color="inherit" margin={{ vertical: 'xs' }}>
-          <Box variant="p" color="inherit">
-            No forecast data available
-          </Box>
-        </Box>
-      }
-    />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -139,7 +177,7 @@ export function createDailyForecastWidget(
   temperatureUnit: 'C' | 'F' = 'C',
 ): WidgetConfig {
   return {
-    definition: { defaultRowSpan: 4, defaultColumnSpan: 2 },
+    definition: { defaultRowSpan: 3, defaultColumnSpan: 2 },
     data: {
       icon: 'table',
       title: 'Daily Forecast',
@@ -148,7 +186,7 @@ export function createDailyForecastWidget(
       content: () => (
         <DailyForecastContent forecast={forecast} loading={loading} error={error} temperatureUnit={temperatureUnit} />
       ),
-      staticMinHeight: 400,
+      staticMinHeight: 320,
     },
   };
 }
