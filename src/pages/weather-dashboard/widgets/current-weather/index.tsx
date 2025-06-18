@@ -62,6 +62,9 @@ function CurrentWeatherContent({ weather, loading, error, temperatureUnit }: Cur
         <Box fontSize="display-l" fontWeight="bold">
           {getWeatherIcon(weather.weatherCode)} {formatTemperature(weather.temperature, temperatureUnit)}
         </Box>
+        <Box variant="small" color="text-body-secondary" padding={{ bottom: 'xs' }}>
+          Feels like {formatTemperature(weather.feelsLike, temperatureUnit)}
+        </Box>
         <Box variant="h3" color="text-body-secondary">
           {getWeatherDescription(weather.weatherCode)}
         </Box>

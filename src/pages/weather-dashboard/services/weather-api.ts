@@ -3,6 +3,7 @@
 
 export interface CurrentWeather {
   temperature: number;
+  feelsLike: number;
   weatherCode: number;
   windSpeed: number;
   windDirection: number;
@@ -106,7 +107,7 @@ export async function fetchWeatherData(latitude: number, longitude: number): Pro
   url.searchParams.append('longitude', longitude.toString());
   url.searchParams.append(
     'current',
-    'temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m',
+    'temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m',
   );
   url.searchParams.append('hourly', 'temperature_2m,precipitation,weather_code,wind_speed_10m');
   url.searchParams.append(
@@ -127,6 +128,7 @@ export async function fetchWeatherData(latitude: number, longitude: number): Pro
   return {
     current: {
       temperature: Math.round(data.current.temperature_2m),
+      feelsLike: Math.round(data.current.apparent_temperature),
       weatherCode: data.current.weather_code,
       windSpeed: Math.round(data.current.wind_speed_10m),
       windDirection: data.current.wind_direction_10m,
