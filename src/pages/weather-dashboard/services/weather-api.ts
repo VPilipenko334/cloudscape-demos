@@ -70,11 +70,11 @@ export const WEATHER_CODES: Record<number, { description: string; icon: string }
   99: { description: 'Thunderstorm with heavy hail', icon: '⛈️' },
 };
 
-// Default location: San Francisco
+// Default location: New York City
 const DEFAULT_LOCATION = {
-  latitude: 37.7749,
-  longitude: -122.4194,
-  name: 'San Francisco',
+  latitude: 40.7128,
+  longitude: -74.006,
+  name: 'New York City',
 };
 
 export async function getCurrentLocation(): Promise<{ latitude: number; longitude: number; name: string }> {
