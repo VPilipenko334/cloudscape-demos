@@ -19,6 +19,7 @@ import LineChart from '@cloudscape-design/components/line-chart';
 import BarChart from '@cloudscape-design/components/bar-chart';
 import Spinner from '@cloudscape-design/components/spinner';
 import Alert from '@cloudscape-design/components/alert';
+import styles from './styles.module.scss';
 
 interface WeatherData {
   current: {
