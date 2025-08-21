@@ -235,7 +235,9 @@ export default function Home() {
                 header: item => (
                   <Link href={item.route}>
                     {item.title}
-                    <Icon name="external" />
+                    <span style={{ color: 'pink' }}>
+                      <Icon name="external" />
+                    </span>
                   </Link>
                 ),
                 sections: [
