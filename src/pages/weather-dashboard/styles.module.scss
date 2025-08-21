@@ -1,0 +1,85 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
+.forecastScroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 16px 8px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--color-background-container-content);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-border-control-default);
+    border-radius: 4px;
+    
+    &:hover {
+      background: var(--color-border-control-hover);
+    }
+  }
+}
+
+.forecastCard {
+  min-width: 140px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  background: var(--color-background-container-content);
+  border: 1px solid var(--color-border-container-top);
+  border-radius: 8px;
+  padding: 16px 12px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.weatherIcon {
+  font-size: 32px;
+  margin: 8px 0;
+  display: block;
+}
+
+.dayName {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--color-text-body-default);
+}
+
+.tempHigh {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-body-default);
+}
+
+.tempLow {
+  font-size: 14px;
+  color: var(--color-text-status-inactive);
+  margin-bottom: 4px;
+}
+
+.precipitation {
+  font-size: 12px;
+  color: var(--color-text-status-info);
+  background: var(--color-background-status-info);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.conditionLabel {
+  font-size: 12px;
+  color: var(--color-text-body-secondary);
+  margin-top: 4px;
+}
