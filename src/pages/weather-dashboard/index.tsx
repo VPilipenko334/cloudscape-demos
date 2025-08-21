@@ -51,23 +51,23 @@ interface LocationData {
   longitude: number;
 }
 
-const weatherCodeMap: { [key: number]: { label: string; severity: 'success' | 'warning' | 'error' } } = {
-  0: { label: 'Clear sky', severity: 'success' },
-  1: { label: 'Mainly clear', severity: 'success' },
-  2: { label: 'Partly cloudy', severity: 'success' },
-  3: { label: 'Overcast', severity: 'warning' },
-  45: { label: 'Fog', severity: 'warning' },
-  48: { label: 'Depositing rime fog', severity: 'warning' },
-  51: { label: 'Light drizzle', severity: 'warning' },
-  53: { label: 'Moderate drizzle', severity: 'warning' },
-  55: { label: 'Dense drizzle', severity: 'warning' },
-  61: { label: 'Slight rain', severity: 'warning' },
-  63: { label: 'Moderate rain', severity: 'error' },
-  65: { label: 'Heavy rain', severity: 'error' },
-  71: { label: 'Slight snow', severity: 'warning' },
-  73: { label: 'Moderate snow', severity: 'error' },
-  75: { label: 'Heavy snow', severity: 'error' },
-  95: { label: 'Thunderstorm', severity: 'error' },
+const weatherCodeMap: { [key: number]: { label: string; severity: 'success' | 'warning' | 'error'; icon: string } } = {
+  0: { label: 'Clear sky', severity: 'success', icon: '☀️' },
+  1: { label: 'Mainly clear', severity: 'success', icon: '🌤️' },
+  2: { label: 'Partly cloudy', severity: 'success', icon: '⛅' },
+  3: { label: 'Overcast', severity: 'warning', icon: '☁️' },
+  45: { label: 'Fog', severity: 'warning', icon: '🌫️' },
+  48: { label: 'Depositing rime fog', severity: 'warning', icon: '🌫️' },
+  51: { label: 'Light drizzle', severity: 'warning', icon: '🌦️' },
+  53: { label: 'Moderate drizzle', severity: 'warning', icon: '🌦️' },
+  55: { label: 'Dense drizzle', severity: 'warning', icon: '🌧️' },
+  61: { label: 'Slight rain', severity: 'warning', icon: '🌧️' },
+  63: { label: 'Moderate rain', severity: 'error', icon: '🌧️' },
+  65: { label: 'Heavy rain', severity: 'error', icon: '⛈️' },
+  71: { label: 'Slight snow', severity: 'warning', icon: '❄️' },
+  73: { label: 'Moderate snow', severity: 'error', icon: '🌨️' },
+  75: { label: 'Heavy snow', severity: 'error', icon: '❄️' },
+  95: { label: 'Thunderstorm', severity: 'error', icon: '⛈️' },
 };
 
 export default function WeatherDashboard() {
