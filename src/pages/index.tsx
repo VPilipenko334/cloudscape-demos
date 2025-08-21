@@ -232,7 +232,12 @@ export default function Home() {
                 selectionGroupLabel: 'Demo selection',
               }}
               cardDefinition={{
-                header: item => <Link href={item.route}>{item.title}</Link>,
+                header: item => (
+                  <Link href={item.route}>
+                    {item.title}
+                    <Icon name="external" />
+                  </Link>
+                ),
                 sections: [
                   {
                     id: 'description',
@@ -242,7 +247,7 @@ export default function Home() {
                   {
                     id: 'actions',
                     content: item => (
-                      <Button href={item.route} iconAlign="right" iconName="external" variant="primary">
+                      <Button href={item.route} variant="primary">
                         Open demo
                       </Button>
                     ),
