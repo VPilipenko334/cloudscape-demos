@@ -26,5 +26,17 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    proxy: {
+      '/api/weather': {
+        target: 'https://api.open-meteo.com',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api\/weather/, ''),
+      },
+      '/api/geocoding': {
+        target: 'https://geocoding-api.open-meteo.com',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api\/geocoding/, ''),
+      },
+    },
   },
 });
