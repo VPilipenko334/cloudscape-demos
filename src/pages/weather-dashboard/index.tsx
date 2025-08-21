@@ -164,9 +164,9 @@ export default function WeatherDashboard() {
   };
 
   const currentWeather = weatherData?.current;
-  const weatherCondition = currentWeather?.weather_code 
-    ? weatherCodeMap[currentWeather.weather_code] || { label: 'Unknown', severity: 'warning' as const }
-    : { label: 'Loading...', severity: 'warning' as const };
+  const weatherCondition = currentWeather?.weather_code
+    ? weatherCodeMap[currentWeather.weather_code] || { label: 'Unknown', severity: 'warning' as const, icon: '❓' }
+    : { label: 'Loading...', severity: 'warning' as const, icon: '⏳' };
 
   return (
     <AppLayout
