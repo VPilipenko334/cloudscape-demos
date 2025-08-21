@@ -8,20 +8,20 @@
   padding: 16px 8px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  
+
   &::-webkit-scrollbar {
     height: 8px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: var(--color-background-container-content);
     border-radius: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: var(--color-border-control-default);
     border-radius: 4px;
-    
+
     &:hover {
       background: var(--color-border-control-hover);
     }
@@ -37,8 +37,10 @@
   border-radius: 8px;
   padding: 16px 12px;
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

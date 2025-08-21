@@ -73,7 +73,7 @@ const weatherCodeMap: { [key: number]: { label: string; severity: 'success' | 'w
 
 export default function WeatherDashboard() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [location, setLocation] = useState<LocationData>({ name: 'New York', latitude: 40.7128, longitude: -74.0060 });
+  const [location, setLocation] = useState<LocationData>({ name: 'New York', latitude: 40.7128, longitude: -74.006 });
   const [searchLocation, setSearchLocation] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -83,13 +83,13 @@ export default function WeatherDashboard() {
     setError(null);
     try {
       const response = await fetch(
-        `/api/weather/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,wind_speed_10m,wind_direction_10m,weather_code&hourly=temperature_2m,precipitation,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code&temperature_unit=fahrenheit&wind_speed_unit=kmh&precipitation_unit=mm&timezone=auto&forecast_days=7`
+        `/api/weather/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,wind_speed_10m,wind_direction_10m,weather_code&hourly=temperature_2m,precipitation,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code&temperature_unit=fahrenheit&wind_speed_unit=kmh&precipitation_unit=mm&timezone=auto&forecast_days=7`,
       );
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch weather data');
       }
-      
+
       const data = await response.json();
       setWeatherData(data);
     } catch (err) {
@@ -101,18 +101,16 @@ export default function WeatherDashboard() {
 
   const searchLocationByName = async (locationName: string) => {
     if (!locationName.trim()) return;
-    
+
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `/api/geocoding/v1/search?name=${encodeURIComponent(locationName)}&count=1`
-      );
-      
+      const response = await fetch(`/api/geocoding/v1/search?name=${encodeURIComponent(locationName)}&count=1`);
+
       if (!response.ok) {
         throw new Error('Failed to search location');
       }
-      
+
       const data = await response.json();
       if (data.results && data.results.length > 0) {
         const result = data.results[0];
@@ -145,7 +143,7 @@ export default function WeatherDashboard() {
 
   const prepareHourlyChartData = () => {
     if (!weatherData?.hourly) return [];
-    
+
     return weatherData.hourly.time.slice(0, 24).map((time, index) => ({
       x: new Date(time).getHours(),
       y: weatherData.hourly.temperature_2m[index],
@@ -154,7 +152,7 @@ export default function WeatherDashboard() {
 
   const prepareDailyChartData = () => {
     if (!weatherData?.daily) return [];
-    
+
     return weatherData.daily.time.map((time, index) => ({
       x: new Date(time).toLocaleDateString('en-US', { weekday: 'short' }),
       max: weatherData.daily.temperature_2m_max[index],
@@ -208,7 +206,7 @@ export default function WeatherDashboard() {
                       value={searchLocation}
                       onChange={({ detail }) => setSearchLocation(detail.value)}
                       placeholder="Enter city name..."
-                      onKeyDown={(e) => {
+                      onKeyDown={e => {
                         if (e.detail.key === 'Enter') {
                           searchLocationByName(searchLocation);
                         }
@@ -216,11 +214,7 @@ export default function WeatherDashboard() {
                     />
                   </FormField>
                   <FormField label=" ">
-                    <Button
-                      variant="primary"
-                      onClick={() => searchLocationByName(searchLocation)}
-                      loading={loading}
-                    >
+                    <Button variant="primary" onClick={() => searchLocationByName(searchLocation)} loading={loading}>
                       Search
                     </Button>
                   </FormField>
@@ -242,15 +236,11 @@ export default function WeatherDashboard() {
                       <Box fontSize="display-l" fontWeight="bold">
                         {formatTemperature(currentWeather.temperature_2m)}
                       </Box>
-                      <Box variant="small">
-                        Feels like {formatTemperature(currentWeather.apparent_temperature)}
-                      </Box>
+                      <Box variant="small">Feels like {formatTemperature(currentWeather.apparent_temperature)}</Box>
                     </Box>
                     <Box>
                       <Box variant="h3">Conditions</Box>
-                      <StatusIndicator type={weatherCondition.severity}>
-                        {weatherCondition.label}
-                      </StatusIndicator>
+                      <StatusIndicator type={weatherCondition.severity}>{weatherCondition.label}</StatusIndicator>
                     </Box>
                     <Box>
                       <Box variant="h3">Humidity</Box>
@@ -334,19 +324,15 @@ export default function WeatherDashboard() {
                       const dayWeather = weatherCodeMap[weatherData.daily.weather_code[index]] || {
                         label: 'Unknown',
                         severity: 'warning' as const,
-                        icon: '❓'
+                        icon: '❓',
                       };
                       return (
                         <div key={day} className={styles.forecastCard}>
                           <div className={styles.dayName}>
                             {new Date(day).toLocaleDateString('en-US', { weekday: 'short' })}
                           </div>
-                          <span className={styles.weatherIcon}>
-                            {dayWeather.icon}
-                          </span>
-                          <div className={styles.conditionLabel}>
-                            {dayWeather.label}
-                          </div>
+                          <span className={styles.weatherIcon}>{dayWeather.icon}</span>
+                          <div className={styles.conditionLabel}>{dayWeather.label}</div>
                           <div className={styles.tempHigh}>
                             {formatTemperature(weatherData.daily.temperature_2m_max[index])}
                           </div>

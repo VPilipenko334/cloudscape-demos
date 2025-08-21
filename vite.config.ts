@@ -30,12 +30,12 @@ export default defineConfig({
       '/api/weather': {
         target: 'https://api.open-meteo.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/weather/, ''),
+        rewrite: path => path.replace(/^\/api\/weather/, ''),
       },
       '/api/geocoding': {
         target: 'https://geocoding-api.open-meteo.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/geocoding/, ''),
+        rewrite: path => path.replace(/^\/api\/geocoding/, ''),
       },
     },
   },
