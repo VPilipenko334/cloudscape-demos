@@ -136,7 +136,7 @@ export default function WeatherDashboard() {
     fetchWeatherData(location.latitude, location.longitude);
   }, []);
 
-  const formatTemperature = (temp: number) => `${Math.round(temp)}°C`;
+  const formatTemperature = (temp: number) => `${Math.round(temp)}°F`;
   const formatWindDirection = (degrees: number) => {
     const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
     return directions[Math.round(degrees / 45) % 8];
