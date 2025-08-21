@@ -327,34 +327,39 @@ export default function WeatherDashboard() {
 
             <Container>
               <SpaceBetween size="m">
-                <Box variant="h2">Weekly Overview</Box>
+                <Box variant="h2">7-Day Forecast</Box>
                 {weatherData?.daily ? (
-                  <ColumnLayout columns={7}>
+                  <div className={styles.forecastScroll}>
                     {weatherData.daily.time.map((day, index) => {
-                      const dayWeather = weatherCodeMap[weatherData.daily.weather_code[index]] || { label: 'Unknown', severity: 'warning' as const };
+                      const dayWeather = weatherCodeMap[weatherData.daily.weather_code[index]] || {
+                        label: 'Unknown',
+                        severity: 'warning' as const,
+                        icon: '❓'
+                      };
                       return (
-                        <Box key={day} textAlign="center">
-                          <Box variant="small" fontWeight="bold">
+                        <div key={day} className={styles.forecastCard}>
+                          <div className={styles.dayName}>
                             {new Date(day).toLocaleDateString('en-US', { weekday: 'short' })}
-                          </Box>
-                          <Box margin={{ top: 'xs', bottom: 'xs' }}>
-                            <Badge color={dayWeather.severity === 'success' ? 'green' : dayWeather.severity === 'warning' ? 'blue' : 'red'}>
-                              {dayWeather.label}
-                            </Badge>
-                          </Box>
-                          <Box variant="small">
-                            <strong>{formatTemperature(weatherData.daily.temperature_2m_max[index])}</strong>
-                          </Box>
-                          <Box variant="small" color="text-status-inactive">
+                          </div>
+                          <span className={styles.weatherIcon}>
+                            {dayWeather.icon}
+                          </span>
+                          <div className={styles.conditionLabel}>
+                            {dayWeather.label}
+                          </div>
+                          <div className={styles.tempHigh}>
+                            {formatTemperature(weatherData.daily.temperature_2m_max[index])}
+                          </div>
+                          <div className={styles.tempLow}>
                             {formatTemperature(weatherData.daily.temperature_2m_min[index])}
-                          </Box>
-                          <Box variant="small">
+                          </div>
+                          <div className={styles.precipitation}>
                             {weatherData.daily.precipitation_sum[index].toFixed(1)}mm
-                          </Box>
-                        </Box>
+                          </div>
+                        </div>
                       );
                     })}
-                  </ColumnLayout>
+                  </div>
                 ) : (
                   <Box textAlign="center">
                     <Spinner />
