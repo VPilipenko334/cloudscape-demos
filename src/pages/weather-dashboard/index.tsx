@@ -105,7 +105,7 @@ export default function WeatherDashboard() {
     setError(null);
     try {
       const response = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(locationName)}&count=1`
+        `/api/geocoding/v1/search?name=${encodeURIComponent(locationName)}&count=1`
       );
       
       if (!response.ok) {
