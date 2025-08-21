@@ -51,6 +51,7 @@
   font-size: 32px;
   margin: 8px 0;
   display: block;
+  filter: hue-rotate(300deg) saturate(1.5);
 }
 
 .dayName {
