@@ -274,13 +274,13 @@ export default function WeatherDashboard() {
                     <LineChart
                       series={[
                         {
-                          title: 'Temperature (°C)',
+                          title: 'Temperature (°F)',
                           type: 'line',
                           data: prepareHourlyChartData(),
                         },
                       ]}
                       xDomain={[0, 23]}
-                      yTitle="Temperature (°C)"
+                      yTitle="Temperature (°F)"
                       xTitle="Hour"
                       height={300}
                       hideFilter
