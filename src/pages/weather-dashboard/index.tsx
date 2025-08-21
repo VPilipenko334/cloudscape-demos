@@ -300,17 +300,17 @@ export default function WeatherDashboard() {
                     <BarChart
                       series={[
                         {
-                          title: 'Max Temp (°C)',
+                          title: 'Max Temp (°F)',
                           type: 'bar',
                           data: prepareDailyChartData().map(d => ({ x: d.x, y: d.max })),
                         },
                         {
-                          title: 'Min Temp (°C)',
+                          title: 'Min Temp (°F)',
                           type: 'bar',
                           data: prepareDailyChartData().map(d => ({ x: d.x, y: d.min })),
                         },
                       ]}
-                      yTitle="Temperature (°C)"
+                      yTitle="Temperature (°F)"
                       xTitle="Day"
                       height={300}
                       hideFilter
